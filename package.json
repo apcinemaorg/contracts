@@ -9,7 +9,7 @@
     "gen"
   ],
   "devDependencies": {
-    "ts-proto": "^2.7.0"
+    "ts-proto": "^2.11.8"
   },
   "version": "1.0.0",
   "description": "APCinema contracts",

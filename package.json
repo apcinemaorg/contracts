@@ -10,7 +10,7 @@
   "devDependencies": {
     "ts-proto": "^2.11.8"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "APCinema contracts",
   "main": "index.js",
   "dependencies": {

@@ -30,6 +30,21 @@ export interface VerifyOtpResponse {
   refreshToken: string;
 }
 
+export interface RegisterRequest {
+  identifier: string;
+  password: string;
+  username?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+}
+
+export interface RegisterResponse {
+  ok: boolean;
+  accessToken: string;
+  refreshToken: string;
+  errorMessage: string;
+}
+
 export const AUTH_V1_PACKAGE_NAME = "auth.v1";
 
 export interface AuthServiceClient {

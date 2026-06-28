@@ -26,3 +26,18 @@ message VerifyOtpResponse {
     string access_token = 1;
     string refresh_token = 2;
 }
+
+message RegisterRequest {
+    string identifier = 1;
+    string password = 2;
+    optional string username = 3;
+    optional string first_name = 4;
+    optional string last_name = 5;
+}
+
+message RegisterResponse {
+    bool ok = 1;
+    string access_token = 2;
+    string refresh_token = 3;
+    string error_message = 4;
+}

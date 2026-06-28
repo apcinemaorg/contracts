@@ -10,7 +10,7 @@
   "devDependencies": {
     "ts-proto": "^2.11.8"
   },
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "APCinema contracts",
   "repository": {
     "type": "git",

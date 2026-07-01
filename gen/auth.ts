@@ -36,6 +36,7 @@ export interface RegisterRequest {
   username?: string | undefined;
   firstName?: string | undefined;
   lastName?: string | undefined;
+  type: string;
 }
 
 export interface RegisterResponse {
@@ -45,23 +46,88 @@ export interface RegisterResponse {
   errorMessage: string;
 }
 
+export interface LoginRequest {
+  identifier: string;
+  password: string;
+  type: string;
+}
+
+export interface LoginResponse {
+  ok: boolean;
+  accessToken: string;
+  refreshToken: string;
+  errorMessage: string;
+}
+
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LogoutRequest {
+  accountId: string;
+}
+
+export interface LogoutResponse {
+  ok: boolean;
+}
+
+export interface GetMeRequest {
+  accountId: string;
+}
+
+export interface GetMeResponse {
+  id: string;
+  phone?: string | undefined;
+  email?: string | undefined;
+  username?: string | undefined;
+  firstName?: string | undefined;
+  lastName?: string | undefined;
+  isPhoneVerified: boolean;
+  isEmailVerified: boolean;
+}
+
 export const AUTH_V1_PACKAGE_NAME = "auth.v1";
 
 export interface AuthServiceClient {
   sendOtp(request: SendOtpRequest): Observable<SendOtpResponse>;
 
   verifyOtp(request: VerifyOtpRequest): Observable<VerifyOtpResponse>;
+
+  register(request: RegisterRequest): Observable<RegisterResponse>;
+
+  login(request: LoginRequest): Observable<LoginResponse>;
+
+  refresh(request: RefreshRequest): Observable<RefreshResponse>;
+
+  logout(request: LogoutRequest): Observable<LogoutResponse>;
+
+  getMe(request: GetMeRequest): Observable<GetMeResponse>;
 }
 
 export interface AuthServiceController {
   sendOtp(request: SendOtpRequest): Promise<SendOtpResponse> | Observable<SendOtpResponse> | SendOtpResponse;
 
   verifyOtp(request: VerifyOtpRequest): Promise<VerifyOtpResponse> | Observable<VerifyOtpResponse> | VerifyOtpResponse;
+
+  register(request: RegisterRequest): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+
+  login(request: LoginRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+
+  refresh(request: RefreshRequest): Promise<RefreshResponse> | Observable<RefreshResponse> | RefreshResponse;
+
+  logout(request: LogoutRequest): Promise<LogoutResponse> | Observable<LogoutResponse> | LogoutResponse;
+
+  getMe(request: GetMeRequest): Promise<GetMeResponse> | Observable<GetMeResponse> | GetMeResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["sendOtp", "verifyOtp"];
+    const grpcMethods: string[] = ["sendOtp", "verifyOtp", "register", "login", "refresh", "logout", "getMe"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

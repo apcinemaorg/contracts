@@ -5,6 +5,11 @@ package auth.v1;
 service AuthService {
     rpc SendOtp (SendOtpRequest) returns (SendOtpResponse);
     rpc VerifyOtp (VerifyOtpRequest) returns (VerifyOtpResponse);
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Refresh (RefreshRequest) returns (RefreshResponse);
+    rpc Logout (LogoutRequest) returns (LogoutResponse);
+    rpc GetMe (GetMeRequest) returns (GetMeResponse);
 }
 
 message SendOtpRequest {
@@ -47,10 +52,43 @@ message LoginRequest {
     string identifier = 1;
     string password = 2;
     string type = 3;
-  }
-  message LoginResponse {
+}
+
+message LoginResponse {
     bool ok = 1;
     string access_token = 2;
     string refresh_token = 3;
     string error_message = 4;
-  }
+}
+
+message RefreshRequest {
+    string refresh_token = 1;
+}
+
+message RefreshResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message LogoutRequest {
+    string account_id = 1;
+}
+
+message LogoutResponse {
+    bool ok = 1;
+}
+
+message GetMeRequest {
+    string account_id = 1;
+}
+
+message GetMeResponse {
+    string id = 1;
+    optional string phone = 2;
+    optional string email = 3;
+    optional string username = 4;
+    optional string first_name = 5;
+    optional string last_name = 6;
+    bool is_phone_verified = 7;
+    bool is_email_verified = 8;
+}

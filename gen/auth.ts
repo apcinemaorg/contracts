@@ -91,6 +91,42 @@ export interface GetMeResponse {
   isEmailVerified: boolean;
 }
 
+export interface ChangePasswordRequest {
+  accountId: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  ok: boolean;
+  errorMessage: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface SendChangeIdentifierOtpRequest {
+  accountId: string;
+  newIdentifier: string;
+  type: string;
+}
+
+export interface SendChangeIdentifierOtpResponse {
+  ok: boolean;
+  errorMessage: string;
+}
+
+export interface VerifyChangeIdentifierRequest {
+  accountId: string;
+  newIdentifier: string;
+  type: string;
+  code: string;
+}
+
+export interface VerifyChangeIdentifierResponse {
+  ok: boolean;
+  errorMessage: string;
+}
+
 export const AUTH_V1_PACKAGE_NAME = "auth.v1";
 
 export interface AuthServiceClient {
@@ -141,3 +177,48 @@ export function AuthServiceControllerMethods() {
 }
 
 export const AUTH_SERVICE_NAME = "AuthService";
+
+export interface AccountServiceClient {
+  changePassword(request: ChangePasswordRequest): Observable<ChangePasswordResponse>;
+
+  sendChangeIdentifierOtp(request: SendChangeIdentifierOtpRequest): Observable<SendChangeIdentifierOtpResponse>;
+
+  verifyChangeIdentifier(request: VerifyChangeIdentifierRequest): Observable<VerifyChangeIdentifierResponse>;
+}
+
+export interface AccountServiceController {
+  changePassword(
+    request: ChangePasswordRequest,
+  ): Promise<ChangePasswordResponse> | Observable<ChangePasswordResponse> | ChangePasswordResponse;
+
+  sendChangeIdentifierOtp(
+    request: SendChangeIdentifierOtpRequest,
+  ):
+    | Promise<SendChangeIdentifierOtpResponse>
+    | Observable<SendChangeIdentifierOtpResponse>
+    | SendChangeIdentifierOtpResponse;
+
+  verifyChangeIdentifier(
+    request: VerifyChangeIdentifierRequest,
+  ):
+    | Promise<VerifyChangeIdentifierResponse>
+    | Observable<VerifyChangeIdentifierResponse>
+    | VerifyChangeIdentifierResponse;
+}
+
+export function AccountServiceControllerMethods() {
+  return function (constructor: Function) {
+    const grpcMethods: string[] = ["changePassword", "sendChangeIdentifierOtp", "verifyChangeIdentifier"];
+    for (const method of grpcMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcMethod("AccountService", method)(constructor.prototype[method], method, descriptor);
+    }
+    const grpcStreamMethods: string[] = [];
+    for (const method of grpcStreamMethods) {
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
+      GrpcStreamMethod("AccountService", method)(constructor.prototype[method], method, descriptor);
+    }
+  };
+}
+
+export const ACCOUNT_SERVICE_NAME = "AccountService";

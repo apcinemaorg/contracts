@@ -92,3 +92,45 @@ message GetMeResponse {
     bool is_phone_verified = 7;
     bool is_email_verified = 8;
 }
+
+service AccountService {
+    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse);
+    rpc SendChangeIdentifierOtp (SendChangeIdentifierOtpRequest) returns (SendChangeIdentifierOtpResponse);
+    rpc VerifyChangeIdentifier (VerifyChangeIdentifierRequest) returns (VerifyChangeIdentifierResponse);
+}
+
+message ChangePasswordRequest {
+    string account_id = 1;
+    string current_password = 2;
+    string new_password = 3;
+}
+
+message ChangePasswordResponse {
+    bool ok = 1;
+    string error_message = 2;
+    string access_token = 3;
+    string refresh_token = 4;
+}
+
+message SendChangeIdentifierOtpRequest {
+    string account_id = 1;
+    string new_identifier = 2;
+    string type = 3;
+}
+
+message SendChangeIdentifierOtpResponse {
+    bool ok = 1;
+    string error_message = 2;
+}
+
+message VerifyChangeIdentifierRequest {
+    string account_id = 1;
+    string new_identifier = 2;
+    string type = 3;
+    string code = 4;
+}
+
+message VerifyChangeIdentifierResponse {
+    bool ok = 1;
+    string error_message = 2;
+}
